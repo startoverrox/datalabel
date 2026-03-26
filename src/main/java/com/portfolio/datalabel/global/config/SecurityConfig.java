@@ -1,5 +1,8 @@
 package com.portfolio.datalabel.global.config;
 
+import com.portfolio.datalabel.global.security.JwtAuthenticationFilter;
+import com.portfolio.datalabel.global.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -31,9 +37,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 가입, 로그인, 스웨거는 통과
                         .anyRequest().authenticated() // 나머지는 인증 필요
-                );
+                )
+                // UsernamePasswordAuthenticationFilter 앞에 커스텀 JWT 필터를 끼워넣음
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
-        // TODO: 향후 이 위치에 JwtAuthenticationFilter를 추가할 예정입니다.
         return http.build();
     }
 }

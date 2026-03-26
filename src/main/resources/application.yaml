@@ -29,3 +29,8 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
+
+  jwt:
+    # 실무에서는 환경변수(${JWT_SECRET})로 주입받아야 하지만, 로컬 개발을 위해 하드코딩합니다.
+    secret: datalabel-portfolio-jwt-secret-key-must-be-long-enough
+    access-token-validity-in-milliseconds: 3600000 # 1시간 (1000 * 60 * 60)

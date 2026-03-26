@@ -4,6 +4,7 @@ import com.portfolio.datalabel.domain.member.dto.MemberLoginRequest;
 import com.portfolio.datalabel.domain.member.dto.MemberResponse;
 import com.portfolio.datalabel.domain.member.dto.MemberSignUpRequest;
 import com.portfolio.datalabel.domain.member.dto.TokenResponse;
+import com.portfolio.datalabel.global.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    // private final JwtTokenTrovider jwtTokenProvider; // 다음 단계에서 구현할 컴포넌트
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public MemberResponse signup(MemberSignUpRequest request) {
@@ -46,9 +47,9 @@ public class AuthService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 3. JWT 토큰 발급 (임시 구현체 반환 - 토큰 생성 로직은 다음 단계에서 연결)
-        // String accessToken = jwtTokenProvider.createAccessToken(member.getEmail(), member.getRole().name());
-        String dummyToken = "jwt.dummy.token.here"; // 임시
-        return new TokenResponse(dummyToken, "Bearer", 3600L);
+        // 3. JWT 토큰 발급
+        String accessToken = jwtTokenProvider.createAccessToken(member.getEmail(), member.getRole().name());
+
+        return new TokenResponse(accessToken, "Bearer", 3600L);
     }
 }
