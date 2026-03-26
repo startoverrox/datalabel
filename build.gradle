@@ -35,9 +35,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// JWT 토큰 관리를 위한 라이브러리
-	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.7'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.7'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.7'
 	// Swagger (SpringDoc OpenAPI 3.0)
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2'
 }
