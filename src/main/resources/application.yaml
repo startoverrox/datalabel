@@ -11,7 +11,7 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/labelon?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/datalabel?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,7 +30,7 @@ spring:
       host: 127.0.0.1
       port: 6379
 
-  jwt:
-    # 실무에서는 환경변수(${JWT_SECRET})로 주입받아야 하지만, 로컬 개발을 위해 하드코딩합니다.
-    secret: datalabel-portfolio-jwt-secret-key-must-be-long-enough
-    access-token-validity-in-milliseconds: 3600000 # 1시간 (1000 * 60 * 60)
+jwt:
+  # 실무에서는 환경변수(${JWT_SECRET})로 주입받아야 하지만, 로컬 개발을 위해 하드코딩합니다.
+  secret: ZGF0YWxhYmVsLXBvcnRmb2xpby1qd3Qtc2VjcmV0LWtleS1tdXN0LWJlLWxvbmctZW5vdWdo
+  access-token-validity-in-milliseconds: 3600000 # 1시간 (1000 * 60 * 60)
