@@ -4,6 +4,8 @@ import com.portfolio.datalabel.domain.member.dto.MemberLoginRequest;
 import com.portfolio.datalabel.domain.member.dto.MemberResponse;
 import com.portfolio.datalabel.domain.member.dto.MemberSignUpRequest;
 import com.portfolio.datalabel.domain.member.dto.TokenResponse;
+import com.portfolio.datalabel.global.exception.CustomException;
+import com.portfolio.datalabel.global.exception.ErrorCode;
 import com.portfolio.datalabel.global.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +23,7 @@ public class AuthService {
     public MemberResponse signup(MemberSignUpRequest request) {
         // 1. 이메일 중복 검사
         if (memberRepository.findByEmail(request.email()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일 입니다."); // 향후 Custom Exception으로 변경 예정
+            throw new CustomException(ErrorCode.EMAIL_DUPLICATION); // 향후 Custom Exception으로 변경 예정
         }
 
         // 2. 비밀번호 암호화 및 엔티티 생성
@@ -41,10 +43,10 @@ public class AuthService {
     public TokenResponse login(MemberLoginRequest request) {
         // 1. 회원 조회
         Member member = memberRepository.findByEmail(request.email())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         // 2. 비밀번호 검증
         if (!passwordEncoder.matches(request.password(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
         // 3. JWT 토큰 발급
